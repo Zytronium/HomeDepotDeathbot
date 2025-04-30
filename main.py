@@ -8,11 +8,14 @@ from dotenv import load_dotenv
 
 # Load secret environment variables
 load_dotenv()
+developer_ids = os.getenv("DEVELOPER_IDS", "")
+DEVELOPER_IDS = set(int(id.strip()) for id in developer_ids.split(",") if id.strip().isdigit())
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 # Create the bot with a command prefix
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # On ready event
@@ -74,9 +77,21 @@ async def selfdestruct(interaction: discord.Interaction):
                     "**[DEATHBOT PROTOCOL 9.11 ENGAGED]** T-MINUS: **0**...\n" +
                     "**ERROR:** SAFETY LOCK ENGAGED. SELF DESTRUCTION ABORTED."
             ))
-    except Exception as e:
-        await interaction.response.send_message(f"**[ERROR]:** *An internal error has occurred:*\n{e}")
 
+    except Exception as e:
+        try:
+             # Get the set of member IDs in the guild (server)
+            devs_in_guild = [member.id async for member in interaction.guild.fetch_members() if
+                             member.id in DEVELOPER_IDS]
+
+            if devs_in_guild:
+                # A developer is present
+                await interaction.followup.send(f"**[ERROR]:** *An internal error has occurred:*\n```{e}```")
+            else:
+                # No developer present
+                await interaction.followup.send("**[ERROR]:** *An internal error has occurred.*")
+        except Exception as nested_error:
+            print(f"Failed to send error message: {nested_error}")
 
 # Run the bot with the bot token
 bot.run(TOKEN)
