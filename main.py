@@ -51,21 +51,20 @@ async def selfdestruct(interaction: discord.Interaction):
         )
         message = await interaction.original_response()
 
-        # Flash between Do Not Disturb and Online
-        for _ in range(6):  # 6 times = ~3 seconds total
-            await bot.change_presence(status=discord.Status.dnd)
+        for i in range(8, -1, -1):
+            status = discord.Status.dnd if i % 2 == 0 else discord.Status.online
+            await bot.change_presence(status=status)
+            if i % 2 == 0:
+                await message.edit(content=f"[DEATHBOT PROTOCOL 9.11 ENGAGED] INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: {int(i / 2)}...")
             await asyncio.sleep(0.5)
             await bot.change_presence(status=discord.Status.online)
-            await asyncio.sleep(0.5)
 
-        for i in range(4, 0, -1):
-            await asyncio.sleep(1)
-            await message.edit(content=f"[DEATHBOT PROTOCOL 9.11 ENGAGED] INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: {i}...")
 
         await asyncio.sleep(1)
-        if randint(1, 3) == 3:
+        if randint(1, 2) == 2:
+            await bot.change_presence(status=discord.Status.dnd)
             await interaction.followup.send("[WARNING]: CRITICAL DAMAGE DETECTED. SHUTDOWN IMMINENT")
-            await asyncio.sleep(1)
+            await asyncio.sleep(2)
             await bot.change_presence(status=discord.Status.invisible)
             await asyncio.sleep(10)
             await bot.change_presence(status=discord.Status.online)
