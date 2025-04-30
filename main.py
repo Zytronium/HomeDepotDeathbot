@@ -46,7 +46,7 @@ async def greet(interaction: discord.Interaction):
 async def selfdestruct(interaction: discord.Interaction):
     try:
         await interaction.response.send_message(
-            "[DEATHBOT PROTOCOL 9.11 ENGAGED] INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: 5...",
+            "**[DEATHBOT PROTOCOL 9.11 ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **5**...",
             ephemeral=False
         )
         message = await interaction.original_response()
@@ -55,7 +55,7 @@ async def selfdestruct(interaction: discord.Interaction):
             status = discord.Status.dnd if i % 2 == 0 else discord.Status.online
             await bot.change_presence(status=status)
             if i % 2 == 0:
-                await message.edit(content=f"[DEATHBOT PROTOCOL 9.11 ENGAGED] INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: {int(i / 2)}...")
+                await message.edit(content=f"**[DEATHBOT PROTOCOL 9.11 ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **{int(i / 2)}**...")
             await asyncio.sleep(0.5)
             await bot.change_presence(status=discord.Status.online)
 
@@ -63,19 +63,19 @@ async def selfdestruct(interaction: discord.Interaction):
         await asyncio.sleep(1)
         if randint(1, 2) == 2:
             await bot.change_presence(status=discord.Status.dnd)
-            await interaction.followup.send("[WARNING]: CRITICAL DAMAGE DETECTED. SHUTDOWN IMMINENT")
+            await interaction.followup.send("**[WARNING]:** CRITICAL DAMAGE DETECTED. SHUTDOWN IMMINENT")
             await asyncio.sleep(2)
             await bot.change_presence(status=discord.Status.invisible)
             await asyncio.sleep(10)
             await bot.change_presence(status=discord.Status.online)
-            await interaction.followup.send("SYSTEM REBOOT COMPLETE. DAMAGE PATCHED. DEATHBOT IS ONLINE.")
+            await interaction.followup.send("**SYSTEM REBOOT COMPLETE.** DAMAGE PATCHED. DEATHBOT IS ONLINE.")
         else:
             await message.edit(content=(
-                    "[DEATHBOT PROTOCOL 9.11 ENGAGED] T-MINUS: 0...\n" +
-                    "ERROR: SAFETY LOCK ENGAGED. SELF DESTRUCTION ABORTED."
+                    "**[DEATHBOT PROTOCOL 9.11 ENGAGED]** T-MINUS: **0**...\n" +
+                    "**ERROR:** SAFETY LOCK ENGAGED. SELF DESTRUCTION ABORTED."
             ))
     except Exception as e:
-        await interaction.response.send_message(f"[ERROR]: An internal error has occurred:\n{e}")
+        await interaction.response.send_message(f"**[ERROR]:** *An internal error has occurred:*\n{e}")
 
 
 # Run the bot with the bot token
