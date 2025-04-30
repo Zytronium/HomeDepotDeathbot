@@ -178,5 +178,16 @@ async def selfdestruct(interaction: Interaction):
         )
 
 
+# America command
+@bot.tree.command(name="america", description="WTF is a kilometer?")
+@with_error_handling()
+async def america(interaction: Interaction):
+    """
+    Sends a link to express Deathbot's truly American and patriotic confusion about what the kilometer is.
+    """
+    # Send a link
+    await interaction.response.send_message("[What the FUCK is a kilometer?](https://whatthefuckisakilometer.com/embed-video)")
+
+
 # Start the bot
 bot.run(TOKEN)
