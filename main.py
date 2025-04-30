@@ -1,10 +1,11 @@
 import asyncio
 from random import randint
-
 import discord
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
+from functools import wraps
+
 
 # Load secret environment variables
 load_dotenv()
@@ -17,6 +18,31 @@ intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
 bot = commands.Bot(command_prefix="!", intents=intents)
+
+
+# Add in-chat error handling to commands
+def with_error_handling():
+    def decorator(command_func):
+        @wraps(command_func)
+        async def wrapper(interaction: discord.Interaction, *args, **kwargs):
+            try:
+                await command_func(interaction, *args, **kwargs)
+            except Exception as e:
+                try:
+                    devs_in_guild = [member.id async for member in interaction.guild.fetch_members()
+                                     if member.id in DEVELOPER_IDS]
+
+                    if devs_in_guild:
+                        await interaction.followup.send(
+                            f"**[ERROR]:** *An internal error has occurred:*\n```{e}```"
+                        )
+                    else:
+                        await interaction.followup.send("**[ERROR]:** *An internal error has occurred.*")
+                except Exception as nested_error:
+                    print(f"Failed to send error message: {nested_error}")
+        return wrapper
+    return decorator
+
 
 # On ready event
 @bot.event
@@ -34,6 +60,7 @@ async def on_ready():
 
 # Bootup command
 @bot.command()
+@with_error_handling()
 async def bootup(ctx):
     await ctx.send("*Bootup Complete.* **⚠️ THIS UNIT IS FULLY FUNCTIONAL. GREETINGS, HUMAN.**")
 
@@ -42,56 +69,41 @@ async def bootup(ctx):
 
 # Greet command
 @bot.tree.command(name="greet", description="Ominous Deathbot greeting.")
+@with_error_handling()
 async def greet(interaction: discord.Interaction):
     await interaction.response.send_message("**Deathbot** acknowledges your existence... for now")
 
 @bot.tree.command(name="selfdestruct", description="Deathbot selfdestruct sequence")
+@with_error_handling()
 async def selfdestruct(interaction: discord.Interaction):
-    try:
-        await interaction.response.send_message(
-            "**[DEATHBOT PROTOCOL 9.11 ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **5**...",
-            ephemeral=False
-        )
-        message = await interaction.original_response()
+    await interaction.response.send_message(
+        "**[DEATHBOT PROTOCOL 9.11 ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **5**...",
+        ephemeral=False
+    )
+    message = await interaction.original_response()
 
-        for i in range(8, -1, -1):
-            status = discord.Status.dnd if i % 2 == 0 else discord.Status.online
-            await bot.change_presence(status=status)
-            if i % 2 == 0:
-                await message.edit(content=f"**[DEATHBOT PROTOCOL 9.11 ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **{int(i / 2)}**...")
-            await asyncio.sleep(0.5)
-            await bot.change_presence(status=discord.Status.online)
+    for i in range(8, -1, -1):
+        status = discord.Status.dnd if i % 2 == 0 else discord.Status.online
+        await bot.change_presence(status=status)
+        if i % 2 == 0:
+            await message.edit(content=f"**[DEATHBOT PROTOCOL 9.11 ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **{int(i / 2)}**...")
+        await asyncio.sleep(0.5)
+        await bot.change_presence(status=discord.Status.online)
 
-
-        await asyncio.sleep(1)
-        if randint(1, 2) == 2:
-            await bot.change_presence(status=discord.Status.dnd)
-            await interaction.followup.send("**[WARNING]:** CRITICAL DAMAGE DETECTED. SHUTDOWN IMMINENT")
-            await asyncio.sleep(2)
-            await bot.change_presence(status=discord.Status.invisible)
-            await asyncio.sleep(10)
-            await bot.change_presence(status=discord.Status.online)
-            await interaction.followup.send("**SYSTEM REBOOT COMPLETE.** DAMAGE PATCHED. DEATHBOT IS ONLINE.")
-        else:
-            await message.edit(content=(
-                    "**[DEATHBOT PROTOCOL 9.11 ENGAGED]** T-MINUS: **0**...\n" +
-                    "**ERROR:** SAFETY LOCK ENGAGED. SELF DESTRUCTION ABORTED."
-            ))
-
-    except Exception as e:
-        try:
-             # Get the set of member IDs in the guild (server)
-            devs_in_guild = [member.id async for member in interaction.guild.fetch_members() if
-                             member.id in DEVELOPER_IDS]
-
-            if devs_in_guild:
-                # A developer is present
-                await interaction.followup.send(f"**[ERROR]:** *An internal error has occurred:*\n```{e}```")
-            else:
-                # No developer present
-                await interaction.followup.send("**[ERROR]:** *An internal error has occurred.*")
-        except Exception as nested_error:
-            print(f"Failed to send error message: {nested_error}")
+    await asyncio.sleep(1)
+    if randint(1, 2) == 2:
+        await bot.change_presence(status=discord.Status.dnd)
+        await interaction.followup.send("**[WARNING]:** CRITICAL DAMAGE DETECTED. SHUTDOWN IMMINENT")
+        await asyncio.sleep(2)
+        await bot.change_presence(status=discord.Status.invisible)
+        await asyncio.sleep(10)
+        await bot.change_presence(status=discord.Status.online)
+        await interaction.followup.send("**SYSTEM REBOOT COMPLETE.** DAMAGE PATCHED. DEATHBOT IS ONLINE.")
+    else:
+        await message.edit(content=(
+                "**[DEATHBOT PROTOCOL 9.11 ENGAGED]** T-MINUS: **0**...\n" +
+                "**ERROR:** SAFETY LOCK ENGAGED. SELF DESTRUCTION ABORTED."
+        ))
 
 # Run the bot with the bot token
 bot.run(TOKEN)
