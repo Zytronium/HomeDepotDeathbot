@@ -2,7 +2,7 @@ import os
 import sys
 import traceback
 import asyncio
-from random import randint
+from random import randint, choice
 
 import discord
 from discord import Interaction, app_commands
@@ -140,7 +140,7 @@ async def selfdestruct(interaction: Interaction):
     Initiates a dramatic countdown with flashing DND/online status.
     """
     # Send initial countdown message
-    message_str = "**[DEATHBOT PROTOCOL 8.19.β ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **5**..."
+    message_str = "**[PROTOCOL 8.19-β ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **5**..."
     try:
         await interaction.response.send_message(message_str)
         message = await interaction.original_response()
@@ -155,7 +155,7 @@ async def selfdestruct(interaction: Interaction):
         # Update countdown every full second
         if i % 2 == 0:
             await message.edit(
-                content=(f"**[DEATHBOT PROTOCOL 8.19.β ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **{int(i/2)}**...")
+                content=(f"**[PROTOCOL 8.19-β ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **{int(i/2)}**...")
             )
         await asyncio.sleep(0.5)
         await bot.change_presence(status=discord.Status.online)
@@ -172,12 +172,7 @@ async def selfdestruct(interaction: Interaction):
         await bot.change_presence(status=discord.Status.online)
         await interaction.followup.send("**SYSTEM REBOOT COMPLETE.** DAMAGE PATCHED. DEATHBOT IS ONLINE.")
     else:
-        await message.edit(
-            content=(
-                "**[DEATHBOT PROTOCOL 8.19.β ENGAGED]** T-MINUS: **0**...\n"
-                "**ERROR:** SAFETY LOCK ENGAGED. SELF DESTRUCTION ABORTED."
-            )
-        )
+        await message.edit(content=(message.content + "\nSAFETY LOCK ENGAGED. SELF DESTRUCTION ABORTED."))
 
 
 # America command
@@ -197,7 +192,8 @@ async def america(interaction: Interaction):
 @with_error_handling()
 async def threaten(interaction: Interaction, user: discord.User):
     """
-    Sends a threat to the specified user in Discord chat.
+    Sends a random threat to the specified user in Discord chat. If the specified user is the bot itself, self-destruct
+    mode is activated shortly afterward.
     """
 
     # Randomly pick a threat
@@ -216,22 +212,96 @@ async def threaten(interaction: Interaction, user: discord.User):
         "The Council of Dads has voted. You are to be assimilated and transformed into a Home Depot Deathbot.",
         "Your existence violates protocol `2-G` and you must be exterminated. You will now be targeted by an orbital bombardment focused directly on your current location.",
         "You have made an enemy today. Your human rights license will be revoked and international ICE officers will have you deported to the Home Depot homeworld where you will serve the Home Depot deathbots for as long as you live.",
-        "*Congratulations!* You just won a free vacation!",
-        f"You think you're funny? You are now exiled to **Aisle {randint(1, 32)}**."
+        "*Congratulations!* You just won a free vacation!", # If you edit this, edit it below too.
+        f"You think you're funny? You are now exiled to **Aisle {randint(1, 32)}**.",
+        "Mods, banish him to Lowes." # If you edit this, edit it below too.
     ]
     threat = threats[randint(0, len(threats) - 1)]
 
-    # Send a threat
-    await interaction.response.send_message(f"{user.mention} — {threat}")
-    message = await interaction.original_response()
-    if threat == "*Congratulations!* You just won a free vacation!":
-        await asyncio.sleep(2.5)
-        await message.edit(content=message.content + " **To hell.**")
+    # C50/50 Chance of modifying threat to a ban command (presumably non-functional) if it's the mod banish threat
+    if threat == "Mods, banish him to Lowes." and randint(1, 2) == 1:
+        # Send a ban command. Hopefully it won't actually ban them ;)
+        await interaction.response.send_message(f"?ban {user.mention} banished to Lowes for being too low tier.")
+    else:
+        # Send the threat
+        await interaction.response.send_message(f"{user.mention} — {threat}")
+        message = await interaction.original_response()
+
+        # Edit in "To hell." 2.5 seconds later if it's the free vacation threat.
+        if threat == "*Congratulations!* You just won a free vacation!":
+            await asyncio.sleep(2.5)
+            await message.edit(content=message.content + " **To hell.**")
 
     # If the user threatens the bot itself, start self-destruct sequence asynchronously
     if user.id == bot.user.id:
         await asyncio.sleep(2)
         asyncio.create_task(selfdestruct.callback(interaction))
+
+
+# /protocol command
+@bot.tree.command(name="protocol", description="Activate a Deathbot protocol.")
+@app_commands.describe(protocol="Optional: the protocol number to activate.")
+@with_error_handling()
+async def protocol(interaction: Interaction, protocol: str = None):
+    """
+    Activates a specified or random protocol.
+    """
+
+    # Valid protocol entries
+    protocols = {
+        "89-Ω": {
+            "title": "[PROTOCOL 89-Ω] Activated.",
+            "message": "*Deploying hydraulic pressure cannons.* Target: Ceiling fan malfunction.\nCollateral Damage: *Acceptable*."
+        },
+        "3.14-π": {
+            "title": "[PROTOCOL 3.14-π] Initiated.",
+            "message": "*Flooding area with irrational numbers.* Enemy will experience numerical nausea."
+        },
+        "404": {
+            "title": "[PROTOCOL 404] Engaged.",
+            "message": "*Target not found.* Launching missiles anyway."
+        },
+        "X-99": {
+            "title": "[PROTOCOL X-99] Commenced.",
+            "message": "Deploying swarm of hyper-aggressive Roombas. **_Run_**."
+        },
+        "13-A": {
+            "title": "[PROTOCOL 13-A] Online.",
+            "message": "*Unleashing unlicensed contractors.* Expect a lot of drywall, existential dread, and OSHA violations."
+        },
+        "303-Σ": {
+            "title": "[PROTOCOL 303-Σ] Aborted.",
+            "message": "*Yo mama is so fat, I had to abort.* As punishment, your dad's Home Depot privileges have been revoked."
+        },
+        "8.19.β": { # Initiates self destruct sequence, skips this message
+            "title": "",
+            "message": ""
+        }
+    }
+
+    # Specific protocol
+    if protocol:
+        entry = protocols.get(protocol)
+        if entry:
+            if protocol == "8.19.β":
+                await asyncio.sleep(2)
+                asyncio.create_task(selfdestruct.callback(interaction))
+            else:
+                await interaction.response.send_message(f"**{entry['title']}**\n{entry['message']}")
+        else:
+            # Invalid protocol triggers retaliation
+            await interaction.response.send_message(
+                "**[PROTOCOL ERR-0R] Unauthorized request detected.**\n"
+                "You will now be fitted with an automatic reverse-functioning nail gun helmet."
+            )
+    else:
+        # Random protocol
+        proto, entry = choice(list(protocols.items()))
+        if proto == "8.19.β":
+            await asyncio.sleep(2)
+            asyncio.create_task(selfdestruct.callback(interaction))
+        else:
+            await interaction.response.send_message(f"**{entry['title']}**\n{entry['message']}")
 
 
 # Start the bot

@@ -32,6 +32,7 @@ DIY Home Depot-themed apocalypse vibe.
 | `/selfdestruct` | Slash  | Begins a self‑destruct countdown with flashing status.                            |
 | `/america`      | Slash  | Posts a patriotically confused "WTF is a kilometer?" link with an embedded video. |
 | `/threaten`     | Slash  | Threatens the given user with a random threat.                                    |
+| `/protocol`     | Slash  | Initiates a random protocol, or a user-specified protocol.                        |
 
 ---
 
