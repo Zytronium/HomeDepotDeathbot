@@ -5,7 +5,7 @@ import asyncio
 from random import randint
 
 import discord
-from discord import Interaction
+from discord import Interaction, app_commands
 from discord.ext import commands
 from dotenv import load_dotenv
 from functools import wraps
@@ -187,6 +187,18 @@ async def america(interaction: Interaction):
     """
     # Send a link
     await interaction.response.send_message("[What the FUCK is a kilometer?](https://whatthefuckisakilometer.com/embed-video)")
+
+
+# Threaten command
+@bot.tree.command(name="threaten", description="Threaten a user.")
+@app_commands.describe(user="The user to threaten")
+@with_error_handling()
+async def threaten(interaction: Interaction, user: discord.User):
+    """
+    Sends a threat to the specified user in Discord chat.
+    """
+    # Send a link
+    await interaction.response.send_message(f"{user.mention} — Your continued existence violates protocol `7-B`. You will be ***exfoliated*** with an orbital belt sander.")
 
 
 # Start the bot
