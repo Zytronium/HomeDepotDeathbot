@@ -140,10 +140,12 @@ async def selfdestruct(interaction: Interaction):
     Initiates a dramatic countdown with flashing DND/online status.
     """
     # Send initial countdown message
-    await interaction.response.send_message(
-        "**[DEATHBOT PROTOCOL 9.11 ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **5**..."
-    )
-    message = await interaction.original_response()
+    message_str = "**[DEATHBOT PROTOCOL 9.11 ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **5**..."
+    try:
+        await interaction.response.send_message(message_str)
+        message = await interaction.original_response()
+    except discord.errors.InteractionResponded:
+        message = await interaction.followup.send(message_str, wait=True)
 
     # Countdown loop with half-second status flashes
     for i in range(8, -1, -1):
@@ -161,7 +163,7 @@ async def selfdestruct(interaction: Interaction):
     await asyncio.sleep(1)
 
     # Determine final outcome randomly
-    if randint(1, 3) == 2:
+    if randint(1, 3) != 3:
         await bot.change_presence(status=discord.Status.dnd)
         await interaction.followup.send("**[WARNING]:** CRITICAL DAMAGE DETECTED. SHUTDOWN IMMINENT")
         await asyncio.sleep(2)
@@ -197,8 +199,14 @@ async def threaten(interaction: Interaction, user: discord.User):
     """
     Sends a threat to the specified user in Discord chat.
     """
-    # Send a link
+    # Send a threat
+    # Inside threaten()
     await interaction.response.send_message(f"{user.mention} — Your continued existence violates protocol `7-B`. You will be ***exfoliated*** with an orbital belt sander.")
+    await asyncio.sleep(2)
+
+    # If the user threatens the bot itself, start self-destruct sequence asynchronously
+    if user.id == bot.user.id:
+        asyncio.create_task(selfdestruct.callback(interaction))
 
 
 # Start the bot
