@@ -190,7 +190,7 @@ async def america(interaction: Interaction):
 @bot.tree.command(name="threaten", description="Threaten a user.")
 @app_commands.describe(user="The user to threaten")
 @with_error_handling()
-async def threaten(interaction: Interaction, user: discord.User):
+async def threaten(interaction: Interaction, user: discord.User, ping: bool = False):
     """
     Sends a random threat to the specified user in Discord chat. If the specified user is the bot itself, self-destruct
     mode is activated shortly afterward.
@@ -221,10 +221,13 @@ async def threaten(interaction: Interaction, user: discord.User):
     # C50/50 Chance of modifying threat to a ban command (presumably non-functional) if it's the mod banish threat
     if threat == "Mods, banish him to Lowes." and randint(1, 2) == 1:
         # Send a ban command. Hopefully it won't actually ban them ;)
-        await interaction.response.send_message(f"?ban {user.mention} banished to Lowes for being too low tier.")
+        await interaction.response.send_message(f"?ban {user.mention} banished to Lowes for being too low tier.",
+        allowed_mentions = discord.AllowedMentions(users=ping)
+        )
     else:
         # Send the threat
-        await interaction.response.send_message(f"{user.mention} — {threat}")
+        await interaction.response.send_message(f"{user.mention} — {threat}",
+        allowed_mentions = discord.AllowedMentions(users=ping))
         message = await interaction.original_response()
 
         # Edit in "To hell." 2.5 seconds later if it's the free vacation threat.
@@ -341,7 +344,8 @@ async def diagnose(interaction: Interaction, user: discord.User = None):
     await interaction.response.send_message(
         f"🔍 Analyzing organic unit: {target.mention}...\n\n"
         f"{report}\n\n"
-        f"💡 Recommended action: **{action}**"
+        f"💡 Recommended action: **{action}**",
+    allowed_mentions=discord.AllowedMentions(users=False)
     )
 
 
