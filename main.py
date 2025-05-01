@@ -208,21 +208,29 @@ async def threaten(interaction: Interaction, user: discord.User):
         "Your IP address has been sent to the Galactic Sandpaper Consortium of Home Depot. Expect aggressive friction shortly.",
         "Your bones will be rearranged alphabetically. Good luck walking in *abecedarian order*.",
         "You’ve been assigned as a volunteer for **Protocol S4N-D3R**. Bring safety glasses and an extra layer skin.",
-        "Your sins have not gone unnoticed by the Council of Elder Dads. You’re to be ***force-fed drywall*** until you achieve enlightenment or perish. Whichever comes first.",
+        "Your sins have not gone unnoticed by the Council of Dads. You’re to be ***force-fed drywall*** until you achieve enlightenment or perish. Whichever comes first.",
         "Vibe checking... You have failed miserably. You will be trapped in an elevator with a saxophonist who only plays ‘Careless Whisper.’",
         "Your brainwaves violate OSHA noise regulations. Expect neural restructuring via tactical crowbar.",
         "We ran a vibe check. You failed. A team of legally-distinct Minions is en route with industrial grade paintball guns and no mercy.",
         "Your continued existence violates protocol `7-B`. You will be ***exfoliated*** with an orbital belt sander.",
-        "The Council of Elder Dads has voted. You are to be assimilated and transformed into a Home Depot Deathbot."
+        "The Council of Dads has voted. You are to be assimilated and transformed into a Home Depot Deathbot.",
+        "Your existence violates protocol `2-G` and you must be exterminated. You will now be targeted by an orbital bombardment focused directly on your current location.",
+        "You have made an enemy today. Your human rights license will be revoked and international ICE officers will have you deported to the Home Depot homeworld where you will serve the Home Depot deathbots for as long as you live.",
+        "*Congratulations!* You just won a free vacation!",
+        f"You think you're funny? You are now exiled to **Aisle {randint(1, 32)}**."
     ]
     threat = threats[randint(0, len(threats) - 1)]
 
     # Send a threat
     await interaction.response.send_message(f"{user.mention} — {threat}")
-    await asyncio.sleep(2)
+    message = await interaction.original_response()
+    if threat == "*Congratulations!* You just won a free vacation!":
+        await asyncio.sleep(2.5)
+        await message.edit(content=message.content + " **To hell.**")
 
     # If the user threatens the bot itself, start self-destruct sequence asynchronously
     if user.id == bot.user.id:
+        await asyncio.sleep(2)
         asyncio.create_task(selfdestruct.callback(interaction))
 
 
