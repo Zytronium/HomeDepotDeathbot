@@ -2,7 +2,7 @@ import os
 import sys
 import traceback
 import asyncio
-from random import randint, choice
+from random import randint, choice, sample
 
 import discord
 from discord import Interaction, app_commands
@@ -302,6 +302,47 @@ async def protocol(interaction: Interaction, protocol: str = None):
             asyncio.create_task(selfdestruct.callback(interaction))
         else:
             await interaction.response.send_message(f"**{entry['title']}**\n{entry['message']}")
+
+
+@bot.tree.command(name="diagnose", description="Run a diagnostic scan on a user.")
+@app_commands.describe(user="The user to diagnose. Leave blank to select randomly.")
+@with_error_handling()
+async def diagnose(interaction: Interaction, user: discord.User = None):
+    """
+    Scans a user and returns a ridiculous diagnostic report.
+    """
+    # Pick the user to diagnose
+    target = user or choice(interaction.guild.members)
+
+    # Diagnostic data templates
+    diagnostics = [
+        f"🦴 Bone density: {randint(35, 90)}%",
+        f"❌ Humor module: {choice(['Inert', 'Overclocked', 'Leaking', 'Replaced with sarcasm'])}",
+        f"🧠 Cognitive core: {choice(['Quantum banana mode', 'Left in airplane mode', 'Missing DLL', 'OSHA noncompliant', 'Albert Einstein 2.0'])}",
+        f"📈 Sanity index: {randint(-200, 1200) / 10}%",
+        f"🦴 Skeleton status: {choice(['Mostly intact', 'Made of LEGOs', 'Held together by spite', 'Unlicensed', 'Missing'])}",
+        f"✅ Vibe signature: {choice(['Dubstep raccoon', 'Ambient cat rage', 'Mild doom jazz', 'Gigachad', 'Unverified Signature', 'Undocumented Immigrant', 'Karen'])}"
+    ]
+
+    recommendations = [
+        "Replace brain with rebar.",
+        "Perform ritual reboot via bathroom mirror.",
+        "Install emotional drivers (version 1.2.9-beta).",
+        "Send to Aisle 9 for recalibration.",
+        "Upgrade personality firmware. Current version: 404.",
+        "Summon Lord Xarathys Dreadbot of Home Depotius Omega. This threat must be delt with.",
+        "Locate and bring home this unit's dad"
+    ]
+
+    report = "\n".join(sample(diagnostics, k=randint(2, 4)))
+    action = choice(recommendations)
+
+    # Send the diagnostic report
+    await interaction.response.send_message(
+        f"🔍 Analyzing organic unit: {target.mention}...\n\n"
+        f"{report}\n\n"
+        f"💡 Recommended action: **{action}**"
+    )
 
 
 # Start the bot
