@@ -25,12 +25,13 @@ DIY Home Depot-themed apocalypse vibe.
 
 ## Commands Reference
 
-| Command        | Type   | Description                                                                       |
-| -------------- | ------ |-----------------------------------------------------------------------------------|
-| `!bootup`      | Prefix | Confirms bot is running.                                                          |
-| `/greet`       | Slash  | Sends an ominous greeting.                                                        |
-| `/selfdestruct`| Slash  | Begins a self‑destruct countdown with flashing status.                            |
-| `/america`     | Slash  | Posts a patriotically confused "WTF is a kilometer?" link with an embedded video. |
+| Command         | Type   | Description                                                                       |
+|-----------------| ------ |-----------------------------------------------------------------------------------|
+| `!bootup`       | Prefix | Confirms bot is running.                                                          |
+| `/greet`        | Slash  | Sends an ominous greeting.                                                        |
+| `/selfdestruct` | Slash  | Begins a self‑destruct countdown with flashing status.                            |
+| `/america`      | Slash  | Posts a patriotically confused "WTF is a kilometer?" link with an embedded video. |
+| `/threaten`     | Slash  | Threatens the given user with a random threat.                                    |
 
 ---
 

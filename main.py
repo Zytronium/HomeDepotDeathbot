@@ -199,9 +199,26 @@ async def threaten(interaction: Interaction, user: discord.User):
     """
     Sends a threat to the specified user in Discord chat.
     """
+
+    # Randomly pick a threat
+    threats = [
+        "I just don't like you. You will have your limbs cut off by a power saw and reattached backwards the next time you fall asleep first at a sleepover.",
+        "You have ignored the signs. Now your mother will be met with a DeWalt DCD791D2 20V MAX Cordless Brushless Drill with a 1/4 inch Irwin Titanium Drill Bit. Her fate is sealed as she feels the full force of the drill bit.",
+        "You have been flagged for ***unholy cringe.*** Your sentence: slow vaporization via industrial microwave.",
+        "Your IP address has been sent to the Galactic Sandpaper Consortium of Home Depot. Expect aggressive friction shortly.",
+        "Your bones will be rearranged alphabetically. Good luck walking in *abecedarian order*.",
+        "You’ve been assigned as a volunteer for **Protocol S4N-D3R**. Bring safety glasses and an extra layer skin.",
+        "Your sins have not gone unnoticed by the Council of Elder Dads. You’re to be ***force-fed drywall*** until you achieve enlightenment or perish. Whichever comes first.",
+        "Vibe checking... You have failed miserably. You will be trapped in an elevator with a saxophonist who only plays ‘Careless Whisper.’",
+        "Your brainwaves violate OSHA noise regulations. Expect neural restructuring via tactical crowbar.",
+        "We ran a vibe check. You failed. A team of legally-distinct Minions is en route with industrial grade paintball guns and no mercy.",
+        "Your continued existence violates protocol `7-B`. You will be ***exfoliated*** with an orbital belt sander.",
+        "The Council of Elder Dads has voted. You are to be assimilated and transformed into a Home Depot Deathbot."
+    ]
+    threat = threats[randint(0, len(threats) - 1)]
+
     # Send a threat
-    # Inside threaten()
-    await interaction.response.send_message(f"{user.mention} — Your continued existence violates protocol `7-B`. You will be ***exfoliated*** with an orbital belt sander.")
+    await interaction.response.send_message(f"{user.mention} — {threat}")
     await asyncio.sleep(2)
 
     # If the user threatens the bot itself, start self-destruct sequence asynchronously
