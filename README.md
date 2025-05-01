@@ -17,7 +17,7 @@ DIY Home Depot-themed apocalypse vibe.
 ## Features
 
 - **Prefix Commands** (`!bootup`): Basic startup confirmation.
-- **Slash Commands** (`/greet`, `/selfdestruct`, `/america`): Native Discord interactions with autocomplete and descriptions.
+- **Slash Commands** (`/greet`, `/selfdestruct`, `/threaten`, etc.): Native Discord interactions with autocomplete and descriptions.
 - **Flashing Status**: Bot toggles between online, Do Not Disturb, and invisible for dramatic effect during self-destruct sequence.
 - **Error Handling Decorator**: Logs full tracebacks to console and sends concise error messages in‑Discord only if a developer is present.
 
@@ -47,24 +47,21 @@ DIY Home Depot-themed apocalypse vibe.
        - Click **"New Application"** in the top right.
        - Give it a name and click **Create**.
 
-    3. **Add a Bot to the application**
+    3. **Enable required settings**
        - In the left-hand menu, click **"Bot"**.
-       - Click **"Add Bot"**, then **"Yes, do it!"**.
-
-    4. **Enable required settings**
        - Under "Privileged Gateway Intents", enable:
-         - `MESSAGE CONTENT INTENT` (required for reading normal message content)
          - `PRESENCE INTENT` (required for status flashing in self-destruct command)
          - `SERVER MEMBERS INTENT` (required for detailed error messages when a dev is in the server)
+         - `MESSAGE CONTENT INTENT` (required for reading normal message content)
 
-    5. **Copy the bot token**
-       - Click **"Reset Token"** and copy the new token.
+    4. **Copy the bot token**
+       - Scroll up and click **"Reset Token"** and copy the new token.
        - Paste this token into your `.env` file as the value for `DISCORD_TOKEN`.
 
-    6. **Set up slash commands (applications.commands scope)**
+    5. **Set up slash commands (applications.commands scope)**
        - No action required here — your bot code automatically registers these when run, as long as the `applications.commands` scope is included in the invite link.
 
-    7. **Generate an invite link**
+    6. **Generate an invite link**
        - In the left menu, click **"OAuth2" > "URL Generator"**
        - Under **Scopes**, check:
          - `bot`
@@ -77,7 +74,7 @@ DIY Home Depot-themed apocalypse vibe.
          - `View Channels`
        - Copy the generated URL and open it in your browser to invite the bot to your server.
 
-    > You can also use this pre-generated invite link (replace the client ID if you made a separate copy, otherwise everything you just did was pointless and it invites the original instead):
+    > You can also use this pre-generated invite link (replace the client ID if you made a separate copy, otherwise it invites the original instead of yours):
     > [Add Deathbot to your server](https://discord.com/oauth2/authorize?client_id=1366947140160716981&permissions=277092584448&integration_type=0&scope=bot+applications.commands)
 
 2. **Clone the repository**  
