@@ -34,6 +34,7 @@ DIY Home Depot-themed apocalypse vibe.
 | `/threaten`     | Slash  | Threatens the given user with a random threat.                                              |
 | `/protocol`     | Slash  | Initiates a random protocol, or a user-specified protocol.                                  |
 | `/diagnose`     | Slash  | Scans a user and returns a ridiculous diagnostic report on a random or user-specified user. |
+| `/loadout`      | Slash  | Creates a randomized robotic home depot deathbot tool-based loadout.                        |
 
 ---
 

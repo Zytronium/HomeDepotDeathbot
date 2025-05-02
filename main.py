@@ -214,12 +214,12 @@ async def threaten(interaction: Interaction, user: discord.User, ping: bool = Fa
         "You have made an enemy today. Your human rights license will be revoked and international ICE officers will have you deported to the Home Depot homeworld where you will serve the Home Depot deathbots for as long as you live.",
         "*Congratulations!* You just won a free vacation!", # If you edit this, edit it below too.
         f"You think you're funny? You are now exiled to **Aisle {randint(1, 32)}**.",
-        "Mods, banish him to Lowes." # If you edit this, edit it below too.
+        "Mods, banish them to Lowes." # If you edit this, edit it below too.
     ]
-    threat = threats[randint(0, len(threats) - 1)]
+    threat = choice(threats)
 
     # C50/50 Chance of modifying threat to a ban command (presumably non-functional) if it's the mod banish threat
-    if threat == "Mods, banish him to Lowes." and randint(1, 2) == 1:
+    if threat == "Mods, banish them to Lowes." and randint(1, 2) == 1:
         # Send a ban command. Hopefully it won't actually ban them ;)
         await interaction.response.send_message(f"?ban {user.mention} banished to Lowes for being too low tier.",
         allowed_mentions = discord.AllowedMentions(users=ping)
@@ -346,6 +346,106 @@ async def diagnose(interaction: Interaction, user: discord.User = None):
         f"{report}\n\n"
         f"💡 Recommended action: **{action}**",
     allowed_mentions=discord.AllowedMentions(users=False)
+    )
+
+
+@bot.tree.command(name="loadout", description="Get a random robotic home depot rebot loadout.")
+@with_error_handling()
+async def loadout(interaction: Interaction):
+    """
+    Creates a randomized robotic home depot tool-based loadout.
+    """
+
+    # Loadout lists
+    head_loadouts = [
+        "Standard Robotic", "Standard Robotic MkII", "Standard Robotic", # Intentionally duplicated to decrease rarity
+        "Human (Borrowed)",
+        "Automatically Firing Nailgun Mounted Helmet",
+        "Automatically Firing Nailgun Mounted Helmet MkII",
+        "Hand *(Talk to The Hand)*", "Hand MkII *(Hand Talks to You)*",
+        "Tactical Nuclear Missile Silo", "Nuclear ICBM Silo",
+        "Lord Xarathys Dreadbot of Home Depotius Omega Jr", "Lord Xarathys Dreadbot of Home Depotius Omega's Head",
+        "Lord Xarathys Dreadbot of Home Depotius Omega Jr MkII", "Lord Xarathys Dreadbot of Home Depotius Omega's Head MkII",
+        "Water Balloon (Temu-Grade, Porous)", "Water Balloon MkII (Industrial-Grade, Explosive)",
+        "Regenerating Hydrogen Balloon (Lowes-Grade, 98% Helium)", "Regenerating Hydrogen Balloon MkII (Home Depot-Grade, Launchable)",
+        "Headlamp", "Headlamp MkII",
+        "F I S H", "Starfish", "Starfish MkII",
+        "Pulse Cannon", "Pulse Cannon MkII",
+        "Plasma Turret", "Plasma Turret MkII",
+        "Anime Cat Girl Head", "Anime Cat Girl Head MkII",
+        "Sentient Fireball Parasite", "Sentient Fireball Parasite MkII (Mitosis-Capable)",
+        "Plasma Ball", "Plasma Ball MkII (Enhanced Processing)",
+        "Headless (missing)", "Headless MkII (WiFi-enabled remote brain)",
+        "Spinning Sawblade Mohawk", "Spinning Sawblade Mohawk MkII",
+        "Toaster Helmet", "Toaster Helmet MkII",
+        "Solar-Powered Leaf Blower Array", "Solar-Powered Leaf Blower Array MkII",
+        "Solar Powered Time Bomb", "Solar Powered Time Bomb MkII (Atomic)",
+        "Golden Toilet Bowl (Cursed)",
+        "Golden Toilet Bowl MkII (Blessed By Lord Xarathys Dreadbot of Home Depotius Omega III)"
+    ]
+
+    arm_loadouts = [
+        "Chainsaw", "Chainsaw MkII",
+        "Industrial-Grade Robotic Hand",
+        "Industrial-Grade Titanium Robotic Hand",
+        "Human Arm", "Human Arm MkII (Muscular)",
+        "Hydraulic Plywood Launcher Cannon", "Hydraulic Plywood Launcher Cannon MkII",
+        "Pneumatic Cannon", "Pneumatic Cannon MkII",
+        "Lazer Pointer (Harmless)", "Lazer Pointer MkII (Extra Harmless)",
+        "Military-Grade Lazer Pointer", "Military-Grade Lazer Pointer MkII",
+        "Nerf Missile Launcher", "Nerf Missile Launcher MkII",
+        "Toy Hammer", "Toy Hammer MkII",
+        "Titanium Sledge Hammer", "Titanium Sledge Hammer MkII",
+        "Power Drill", "Power Drill MkII",
+        "Multitool", "Multitool MkII",
+        "Semi-Automatic Machine Gun", "Semi-Automatic Machine Gun MkII",
+        "Machete Arm", "Machete Arm MkII",
+        "Borg Assimilation Tubules", "Borg Assimilation Tubules MkII",
+        "Sawblade Hand (Low-Grade)", "Sawblade Hand MkII (High-Grade)",
+        "Welding Torch", "Welding Torch MkII",
+        "Sawblade Launcher", "Sawblade Launcher MkII",
+        "Fireball Launcher", "Fireball Launcher MkII",
+        "Repair Kit", "Repair Kit MkII",
+        "Godzilla's Arm", "Godzilla's Arm MkII (Extra Strength)",
+        "Turd Cannon", "Turd Cannon MkII (Explosive)",
+        "Missing", "Jet Engine Thruster (This Arm Only)"
+    ]
+
+    core_loadouts = [
+        "Concrete Mixer", "Concrete Mixer MkII",
+        "Forklift Engine", "Forklift Engine (With Turbocharger)",
+        "Demon Core (Held Up By a Screwdriver)", "Demon Core MkII (Criticality Reached) (*Run.*)",
+        "Sentient Toaster Oven", "Sentient Toaster Oven MkII (Extra Sentient)",
+        "V8 Car Engine", "V8 Car Engine (With Turbocharger)",
+        "Trojan Horse", "Trojan Horse MkII (Extra Horsepower)",
+        "Nuclear Reactor", "Nuclear Reactor MkII",
+        "Missile Silo", "Missile Silo MkII (Nuclear)",
+        "Oversized Blender", "Propane Furnace",
+        "Dyson Sphere (Nanoscopic Edition)",
+        "Microwave Oven", "Microwave Oven MkII (Possibly Sentient)",
+        "Rage-Powered Engine", "Rage-Powered Engine MkII",
+        "Waffle Iron Furnace (Syrup-Cooled)",
+        "Bag of Screaming Souls (Retail Edition)",
+        "Forklift (Unlicensed)", "Forklift MkII",
+        "Blue Fire Furnace (Water-Cooled)",
+        "Human Heart", "Human Heart MkII (Retail-Grade)",
+        "Super Computer", "Quantum Super Computer MkII",
+        "Your Mom", "Your Mom MkII (Extra Fat)",
+        "Empty", "Empty MkII (Skill Issue)",
+        "Home Depot Music Jukebox", "Home Depot Music Jukebox MkII (Remix Edition)"
+    ]
+
+    head = choice(head_loadouts)
+    l_arm = choice(arm_loadouts)
+    r_arm = choice(arm_loadouts)
+    core = choice(core_loadouts)
+
+    await interaction.response.send_message(
+        f"## **[HOME DEPOT ROBOTIC DEPLOYMENT KIT LOADED]**:\n"
+        f"**Head:** {head}\n"
+        f"**Left Arm:** {l_arm}\n"
+        f"**Right Arm:** {r_arm}\n"
+        f"**Core:** {core}"
     )
 
 
