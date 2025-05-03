@@ -203,9 +203,9 @@ async def threaten(interaction: Interaction, user: discord.User, ping: bool = Fa
         "You have been flagged for ***unholy cringe.*** Your sentence: slow vaporization via industrial microwave.",
         "Your IP address has been sent to the Galactic Sandpaper Consortium of Home Depot. Expect aggressive friction shortly.",
         "Your bones will be rearranged alphabetically. Good luck walking in *abecedarian order*.",
-        "You’ve been assigned as a volunteer for **Protocol S4N-D3R**. Bring safety glasses and an extra layer skin.",
-        "Your sins have not gone unnoticed by the Council of Dads. You’re to be ***force-fed drywall*** until you achieve enlightenment or perish. Whichever comes first.",
-        "Vibe checking... You have failed miserably. You will be trapped in an elevator with a saxophonist who only plays ‘Careless Whisper.’",
+        "You've been assigned as a volunteer for **Protocol S4N-D3R**. Bring safety glasses and an extra layer skin.",
+        "Your sins have not gone unnoticed by the Council of Dads. You're to be ***force-fed drywall*** until you achieve enlightenment or perish. Whichever comes first.",
+        "Vibe checking... You have failed miserably. You will be trapped in an elevator with a saxophonist who only plays 'Careless Whisper.'",
         "Your brainwaves violate OSHA noise regulations. Expect neural restructuring via tactical crowbar.",
         "We ran a vibe check. You failed. A team of legally-distinct Minions is en route with industrial grade paintball guns and no mercy.",
         "Your continued existence violates protocol `7-B`. You will be ***exfoliated*** with an orbital belt sander.",
@@ -218,7 +218,7 @@ async def threaten(interaction: Interaction, user: discord.User, ping: bool = Fa
     ]
     threat = choice(threats)
 
-    # C50/50 Chance of modifying threat to a ban command (presumably non-functional) if it's the mod banish threat
+    # 50/50 Chance of modifying threat to a ban command (presumably non-functional) if it's the mod banish threat
     if threat == "Mods, banish them to Lowes." and randint(1, 2) == 1:
         # Send a ban command. Hopefully it won't actually ban them ;)
         await interaction.response.send_message(f"?ban {user.mention} banished to Lowes for being too low tier.",
