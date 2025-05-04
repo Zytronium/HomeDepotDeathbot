@@ -276,7 +276,7 @@ async def protocol(interaction: Interaction, protocol: str = None):
             "title": "[PROTOCOL 303-Σ] Aborted.",
             "message": "*Yo mama is so fat, I had to abort.* As punishment, your dad's Home Depot privileges have been revoked."
         },
-        "8.19.β": { # Initiates self destruct sequence, skips this message
+        "8.19-β": { # Initiates self destruct sequence, skips this message
             "title": "",
             "message": ""
         }
