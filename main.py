@@ -286,7 +286,7 @@ async def threaten(interaction: Interaction, user: discord.User, ping: bool = Fa
     """
 
     if user.id == 1047614240778895462 and randint(1, 2) != 1: # Phylyssys's ID
-        await interaction.send_message(f"{user.mention} [Happy Birthday](https://thefactionnexus.tech/happy-birthday)!")
+        await interaction.response.send_message(f"{user.mention} [Happy Birthday](https://thefactionnexus.tech/happy-birthday)!")
         return
 
     threat = await get_threat()
