@@ -286,7 +286,7 @@ async def protocol(interaction: Interaction, protocol: str = None):
     if protocol:
         entry = protocols.get(protocol)
         if entry:
-            if protocol == "8.19.β":
+            if protocol == "8.19-β":
                 await asyncio.sleep(2)
                 asyncio.create_task(selfdestruct.callback(interaction))
             else:
@@ -300,7 +300,7 @@ async def protocol(interaction: Interaction, protocol: str = None):
     else:
         # Random protocol
         proto, entry = choice(list(protocols.items()))
-        if proto == "8.19.β":
+        if proto == "8.19-β":
             await asyncio.sleep(2)
             asyncio.create_task(selfdestruct.callback(interaction))
         else:
