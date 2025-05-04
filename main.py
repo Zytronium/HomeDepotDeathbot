@@ -282,8 +282,12 @@ async def america(interaction: Interaction):
 async def threaten(interaction: Interaction, user: discord.User, ping: bool = False):
     """
     Sends a random threat to the specified user in Discord chat. If the specified user is the bot itself, self-destruct
-    mode is activated shortly afterward.
+    mode is activated shortly afterward. If the user specified is Phylyssys, 50/50 chance to wish them a happy birthday
     """
+
+    if user.id == 1047614240778895462 and randint(1, 2) != 1: # Phylyssys's ID
+        await interaction.send_message(f"{user.mention} [Happy Birthday](https://thefactionnexus.tech/happy-birthday)!")
+        return
 
     threat = await get_threat()
 
