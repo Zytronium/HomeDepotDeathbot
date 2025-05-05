@@ -418,7 +418,7 @@ async def diagnose(interaction: Interaction, user: discord.User = None):
     # Diagnostic data templates
     diagnostics = [
         f"🦴 Bone density: {randint(35, 90)}%",
-        f"❌ Humor module: {choice(['Inert', 'Overclocked', 'Leaking', 'Replaced with sarcasm'])}",
+        f"🤡 Humor module: {choice(['Inert', 'Overclocked', 'Leaking', 'Replaced with sarcasm'])}",
         f"🧠 Cognitive core: {choice(['Quantum banana mode', 'Left in airplane mode', 'Missing DLL', 'OSHA noncompliant', 'Albert Einstein 2.0'])}",
         f"📈 Sanity index: {randint(-200, 1200) / 10}%",
         f"🦴 Skeleton status: {choice(['Mostly intact', 'Made of LEGOs', 'Held together by spite', 'Unlicensed', 'Missing'])}",
