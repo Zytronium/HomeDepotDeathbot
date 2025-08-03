@@ -229,8 +229,9 @@ async def selfdestruct(interaction: Interaction):
     Initiates a dramatic countdown with flashing DND/online status.
     """
     shutdown_str = "**[PROTOCOL 8.19-β ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS:"
-    # Send initial countdown message
     message_str = f"{shutdown_str} **5**..."
+
+    # Send initial countdown message
     try:
         await interaction.response.send_message(message_str)
         message = await interaction.original_response()
