@@ -228,8 +228,9 @@ async def selfdestruct(interaction: Interaction):
     """
     Initiates a dramatic countdown with flashing DND/online status.
     """
+    shutdown_str = "**[PROTOCOL 8.19-β ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS:"
     # Send initial countdown message
-    message_str = "**[PROTOCOL 8.19-β ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **5**..."
+    message_str = f"{shutdown_str} **5**..."
     try:
         await interaction.response.send_message(message_str)
         message = await interaction.original_response()
@@ -244,7 +245,7 @@ async def selfdestruct(interaction: Interaction):
         # Update countdown every full second
         if i % 2 == 0:
             await message.edit(
-                content=(f"**[PROTOCOL 8.19-β ENGAGED]** INITIATING SELF-DESTRUCT SEQUENCE. T-MINUS: **{int(i/2)}**...")
+                content=f"{shutdown_str} **{int(i / 2)}**..."
             )
         await asyncio.sleep(0.5)
         await bot.change_presence(status=discord.Status.online)
@@ -261,7 +262,7 @@ async def selfdestruct(interaction: Interaction):
         await bot.change_presence(status=discord.Status.online)
         await interaction.followup.send("**SYSTEM REBOOT COMPLETE.** DAMAGE PATCHED. DEATHBOT IS ONLINE.")
     else:
-        await message.edit(content=(message.content + "\nSAFETY LOCK ENGAGED. SELF DESTRUCTION ABORTED."))
+        await message.edit(content=f"{shutdown_str} **0**... \nSAFETY LOCK ENGAGED. SELF DESTRUCTION ABORTED.")
 
 
 # America command
