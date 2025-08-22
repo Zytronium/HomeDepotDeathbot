@@ -34,6 +34,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 separator = "-" * 20
 
+
 def get_loadout():
     """
     Generate a random loadout for head, arms, and core.
@@ -368,6 +369,50 @@ async def selfdestruct(interaction: Interaction):
     """
     Initiates a dramatic countdown with flashing DND/online (red/green) status.
     """
+    async def run_self_destruct(interaction: Interaction, message: discord.Message, shutdown_str: str):
+        """
+        Handle the countdown and final outcome of the self-destruct sequence.
+        """
+        # Countdown loop with half-second status flashes
+        for i in range(8, -1, -1):
+            # Alternate between DND (red) and online every half-second
+            status = discord.Status.dnd if i % 2 == 0 else discord.Status.online
+            await bot.change_presence(status=status)
+            # Update countdown every full second
+            if i % 2 == 0:
+                await message.edit(
+                    content=f"{shutdown_str} **{int(i / 2)}**..."
+                )
+            await asyncio.sleep(0.5)
+            await bot.change_presence(status=discord.Status.online)
+
+        await asyncio.sleep(1)
+
+        await finalize_self_destruct(interaction, message, shutdown_str)
+
+
+    async def finalize_self_destruct(interaction: Interaction, message: discord.Message, shutdown_str: str):
+        # Determine final outcome randomly
+        if randint(1, 3) != 3:
+            await bot.change_presence(status=discord.Status.dnd)
+            await interaction.followup.send(
+                "**[WARNING]:** CRITICAL DAMAGE DETECTED. SHUTDOWN IMMINENT"
+            )
+            await asyncio.sleep(2)
+            await bot.change_presence(status=discord.Status.invisible)
+            await asyncio.sleep(10)
+            await bot.change_presence(status=discord.Status.online)
+            await interaction.followup.send(
+                "**SYSTEM REBOOT COMPLETE.** DAMAGE "
+                "PATCHED. DEATHBOT IS ONLINE."
+            )
+        else:
+            await message.edit(
+                content=f"{shutdown_str} **0**... \n"
+                        f"SAFETY LOCK ENGAGED. SELF DESTRUCTION ABORTED."
+            )
+
+
     shutdown_str = ("**[PROTOCOL 8.19-β ENGAGED]** INITIATING SELF-DESTRUCT "
                     "SEQUENCE. T-MINUS:")
     message_str = f"{shutdown_str} **5**..."
@@ -379,37 +424,8 @@ async def selfdestruct(interaction: Interaction):
     except discord.errors.InteractionResponded:
         message = await interaction.followup.send(message_str, wait=True)
 
-    # Countdown loop with half-second status flashes
-    for i in range(8, -1, -1):
-        # Alternate between DND (red) and online every half-second
-        status = discord.Status.dnd if i % 2 == 0 else discord.Status.online
-        await bot.change_presence(status=status)
-        # Update countdown every full second
-        if i % 2 == 0:
-            await message.edit(
-                content=f"{shutdown_str} **{int(i / 2)}**..."
-            )
-        await asyncio.sleep(0.5)
-        await bot.change_presence(status=discord.Status.online)
-
-    await asyncio.sleep(1)
-
-    # Determine final outcome randomly
-    if randint(1, 3) != 3:
-        await bot.change_presence(status=discord.Status.dnd)
-        await interaction.followup.send("**[WARNING]:** CRITICAL DAMAGE "
-                                        "DETECTED. SHUTDOWN IMMINENT")
-        await asyncio.sleep(2)
-        await bot.change_presence(status=discord.Status.invisible)
-        await asyncio.sleep(10)
-        await bot.change_presence(status=discord.Status.online)
-        await interaction.followup.send("**SYSTEM REBOOT COMPLETE.** DAMAGE "
-                                        "PATCHED. DEATHBOT IS ONLINE.")
-    else:
-        await message.edit(
-            content=f"{shutdown_str} **0**... \n"
-                    f"SAFETY LOCK ENGAGED. SELF DESTRUCTION ABORTED."
-        )
+    # Handle countdown sequence and final outcome
+    await run_self_destruct(interaction, message, shutdown_str)
 
 
 # America command
@@ -547,7 +563,7 @@ async def get_threat() -> str:
     return choice(threats)
 
 
-# /protocol command
+# Protocol command
 @bot.tree.command(name="protocol", description="Activate a Deathbot protocol.")
 @app_commands.describe(protocol="Optional: the protocol number to activate.")
 @with_error_handling()
@@ -587,7 +603,7 @@ async def protocol(interaction: Interaction, protocol: str = None):
             "message": "*Yo mama is so fat, I had to abort.* As punishment, "
                        "your dad's Home Depot privileges have been revoked."
         },
-        "8.19-β": { # Initiates self destruct sequence, skips this message
+        "8.19-β": {  # Initiates self destruct sequence, skips this message
             "title": "",
             "message": ""
         }
@@ -726,7 +742,7 @@ async def threaten_creator(interaction: Interaction):
     threat = await get_threat()
 
     try:
-        creator = await bot.fetch_user(405547931102609429)
+        creator = await bot.fetch_user(CREATOR_ID)
 
         # 50% chance to modify threat to a ban command if it's mod banish threat
         if threat == "Mods, banish him to Lowes." and randint(1, 2) == 2:
