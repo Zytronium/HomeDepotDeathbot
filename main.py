@@ -745,7 +745,7 @@ async def threaten_creator(interaction: Interaction):
         creator = await bot.fetch_user(CREATOR_ID)
 
         # 50% chance to modify threat to a ban command if it's mod banish threat
-        if threat == "Mods, banish him to Lowes." and randint(1, 2) == 2:
+        if threat == "Mods, banish them to Lowes." and randint(1, 2) == 2:
             # Send a ban command.
             await creator.send(
                 f"-# Threat from {interaction.user.mention}\n"
