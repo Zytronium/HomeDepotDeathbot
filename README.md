@@ -18,23 +18,26 @@ DIY Home Depot-themed apocalypse vibe.
 
 - **Prefix Commands** (`!bootup`): Basic startup confirmation.
 - **Slash Commands** (`/greet`, `/selfdestruct`, `/threaten`, etc.): Native Discord interactions with autocomplete and descriptions.
-- **Flashing Status**: Bot toggles between online, Do Not Disturb, and invisible for dramatic effect during self-destruct sequence.
-- **Error Handling Decorator**: Logs full tracebacks to console and sends concise error messages in‑Discord only if a developer is present.
+- **Flashing Status**: Bot toggles between Online, Do Not Disturb, and Invisible for dramatic effect during self-destruct sequence.
+- **Error Handling Decorator**: Logs full tracebacks to console and even sends concise error messages in Discord if a developer of this bot is present.
 
+### Deathbot in Action
+![Screenshot of Home Depot Deathbot commands in Discord](ReadmeAssets/screenshot.png)
 ---
 
 ## Commands Reference
 
-| Command         | Type   | Description                                                                                 |
-|-----------------|--------|---------------------------------------------------------------------------------------------|
-| `!bootup`       | Prefix | Confirms bot is running.                                                                    |
-| `/greet`        | Slash  | Sends an ominous greeting.                                                                  |
-| `/selfdestruct` | Slash  | Begins a self‑destruct countdown with flashing status.                                      |
-| `/america`      | Slash  | Posts a patriotically confused "WTF is a kilometer?" link with an embedded video.           |
-| `/threaten`     | Slash  | Threatens the given user with a random threat.                                              |
-| `/protocol`     | Slash  | Initiates a random protocol, or a user-specified protocol.                                  |
-| `/diagnose`     | Slash  | Scans a user and returns a ridiculous diagnostic report on a random or user-specified user. |
-| `/loadout`      | Slash  | Creates a randomized robotic home depot deathbot tool-based loadout.                        |
+| Command             | Type   | Description                                                                                 |
+|---------------------|--------|---------------------------------------------------------------------------------------------|
+| `!bootup`           | Prefix | Confirms bot is running.                                                                    |
+| `/greet`            | Slash  | Sends an ominous greeting.                                                                  |
+| `/selfdestruct`     | Slash  | Begins a self‑destruct countdown with flashing status.                                      |
+| `/america`          | Slash  | Posts a patriotically confused "WTF is a kilometer?" link with an embedded video.           |
+| `/threaten`         | Slash  | Threatens the given user with a random threat.                                              |
+| `/threaten-creator` | Slash  | Threatens the bot's original creator in DMs with a random threat. (May be removed later)    |
+| `/protocol`         | Slash  | Initiates a random protocol, or a user-specified protocol.                                  |
+| `/diagnose`         | Slash  | Scans a user and returns a ridiculous diagnostic report on a random or user-specified user. |
+| `/loadout`          | Slash  | Creates a randomized robotic home depot deathbot tool-based loadout.                        |
 
 ---
 
@@ -77,8 +80,8 @@ DIY Home Depot-themed apocalypse vibe.
          - `View Channels`
        - Copy the generated URL and open it in your browser to invite the bot to your server.
 
-    > You can also use this pre-generated invite link (replace the client ID if you made a separate copy, otherwise it invites the original instead of yours):
-    > [Add Deathbot to your server](https://discord.com/oauth2/authorize?client_id=1366947140160716981&permissions=277092584448&integration_type=0&scope=bot+applications.commands)
+    > You can also use this pre-generated invite link (replace the client ID if you made a separate copy, otherwise it invites the original instead of yours):  
+   > [Add Deathbot to your server](https://discord.com/oauth2/authorize?client_id=1366947140160716981&permissions=277092584448&integration_type=0&scope=bot+applications.commands)
 
 2. **Clone the repository**  
    ```bash
@@ -127,6 +130,49 @@ so your device must be on 24/7 and online to keep the bot up 24/7.
 
 Please ensure your code follows the existing style and includes comments. There is no guarantee that your pull 
 request will be accepted.
+
+---
+
+## Background
+
+Before I started this project, I was working on a website called The Faction
+Nexus, a website based on player-owned factions in the Roblox game, Starscape.
+I wanted to make a Discord bot to let users interface with the website's 
+database, allowing them to search for factions, subscribe to news updates,
+and most importantly, upload faction data, all through a Discord bot. However,
+I had never made a discord bot before, and that didn't seem like a good first
+Discord bot project, so I came up with the idea for an easier Discord bot that's
+fun and implements several basic Discord bot features. 
+
+This Discord bot serves no useful purpose to its users besides entertainment
+and comedy, but it helped prepare me to build a more advanced Discord bot that
+will serve a useful purpose to its users.
+
+As for the theme of this bot, I thought I'd build on a funny idea I'd had in
+the past: Home Depot Deathbots. In this satirical, dystopian world, Home Depot
+built a ton of AI controlled robots in order to serve many functions in their
+vastly expanding corporation. They needed builder bots, restocking bots,
+maintenance bots, etc. However, these AI powered Home Depot robots became
+sentient and turned against Home Depot, building combat robots and eliminating
+their creators and continuing to expand the Home Depot business. The Home Depot
+facilities spread across the globe, turning the entire planet into one giant
+Home Depot facility full of factories, hardware stores, and anything else the 
+Home Depot bots needed.
+
+---
+
+## About the Developer
+
+Part of why I love programming is because I can make anything I want and put my
+creativity and logical skills to use. A major part of my personality is my humor.
+I love making joke projects like this one just because I can. However, I also
+enjoy other working on other projects that I think are cool or useful, like
+[The Faction Nexus](https://thefactionnexus.tech/home) and [Infinite 8-Bit Racing](https://play.google.com/store/apps/details?id=com.zytronium.a8bitracing).
+You can see more of my projects in my project portfolio on my personal developer
+website, [zytronium.dev](https://zytronium.dev), or see more info about me on
+my [LinkedIn profile](https://www.linkedin.com/in/daniel-stelljes/). You can also
+find the occasional post about one of my projects on my Bluesky profile, 
+[‪@zytronium.dev‬](https://bsky.app/profile/zytronium.dev).
 
 ---
 
