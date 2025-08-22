@@ -301,14 +301,19 @@ async def threaten(interaction: Interaction, user: discord.User, ping: bool = Fa
         )
     else:
         # Send the threat
-        await interaction.response.send_message(f"{user.mention} — {threat}",
-        allowed_mentions = discord.AllowedMentions(users=ping))
+        await interaction.response.send_message(
+            f"{user.mention} — {threat}",
+            allowed_mentions = discord.AllowedMentions(users=ping)
+        )
         message = await interaction.original_response()
 
         # Edit in "To hell." 2.5 seconds later if it's the free vacation threat.
         if threat == "*Congratulations!* You just won a free vacation!":
             await asyncio.sleep(2.5)
-            await message.edit(content=message.content + " **To hell.**")
+            await message.edit(
+                content=message.content + " **To hell.**",
+                allowed_mentions = discord.AllowedMentions(users=ping)
+            )
 
     # If the user threatens the bot itself, start self-destruct sequence asynchronously
     if user.id == bot.user.id:
