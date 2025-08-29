@@ -169,8 +169,7 @@ I love making joke projects like this one just because I can. However, I also
 enjoy other working on other projects that I think are cool or useful, like
 [The Faction Nexus](https://thefactionnexus.tech/home) and [Infinite 8-Bit Racing](https://play.google.com/store/apps/details?id=com.zytronium.a8bitracing).
 You can see more of my projects in my project portfolio on my personal developer
-website, [zytronium.dev](https://zytronium.dev), or see more info about me on
-my [LinkedIn profile](https://www.linkedin.com/in/daniel-stelljes/). You can also
+website, [zytronium.dev](https://zytronium.dev). You can also
 find the occasional post about one of my projects on my Bluesky profile, 
 [‪@zytronium.dev‬](https://bsky.app/profile/zytronium.dev).
 
